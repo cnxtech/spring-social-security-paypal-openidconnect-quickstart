@@ -9,6 +9,7 @@
 	
 	<!-- Enable @Annotation-drive bean configuration -->
 	<context:annotation-config />
+	<context:component-scan base-package="org.springframework.social.quickstart.user" />
 	
 	<!-- Configures External Property Resolution -->
 	<import resource="properties.xml" />
@@ -18,5 +19,7 @@
 
 	<!-- Configures Spring Social -->
  	<bean class="org.springframework.social.quickstart.config.SocialConfig" />
+ 	
+ 	
 
 </beans>

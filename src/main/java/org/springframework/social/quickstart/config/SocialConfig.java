@@ -55,8 +55,7 @@ public class SocialConfig {
 	private DataSource dataSource;
 
 	/**
-	 * When a new provider is added to the app, register its
-	 * {@link ConnectionFactory} here.
+	 * When a new provider is added to the app, register its {@link ConnectionFactory} here.
 	 * 
 	 * @see PayPalConnectionFactory
 	 */
@@ -68,8 +67,7 @@ public class SocialConfig {
 	}
 
 	/**
-	 * Singleton data access object providing access to connections across all
-	 * users.
+	 * Singleton data access object providing access to connections across all users.
 	 */
 	@Bean
 	public UsersConnectionRepository usersConnectionRepository() {
@@ -79,8 +77,7 @@ public class SocialConfig {
 	}
 
 	/**
-	 * Request-scoped data access object providing access to the current user's
-	 * connections.
+	 * Request-scoped data access object providing access to the current user's connections.
 	 */
 	@Bean
 	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
@@ -90,8 +87,7 @@ public class SocialConfig {
 	}
 
 	/**
-	 * A proxy to a request-scoped object representing the current user's
-	 * primary PayPal account.
+	 * A proxy to a request-scoped object representing the current user's primary PayPal account.
 	 * 
 	 * @throws NotConnectedException
 	 *             if the user is not connected to paypal.

@@ -1,0 +1,27 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	<!-- Http config which has custom entry point.  Notice that there is no form login -->
+    <http auto-config="false" use-expressions="true" disable-url-rewriting="true" entry-point-ref="authenticationEntryPoint"  >
+    	<intercept-url pattern="/signin/**" access="permitAll" />
+    	<intercept-url pattern="/popuphandler" access="permitAll" />
+        <intercept-url pattern="/**" access="isAuthenticated()" />
+        <logout invalidate-session="true" logout-success-url="/signout" />
+   </http>
+   
+    <beans:bean id="authenticationEntryPoint"  class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint"> 
+    	<beans:constructor-arg name="loginFormUrl"  value="/signin"/>
+	</beans:bean>
+
+    <authentication-manager alias="authenticationManager" >
+    	<authentication-provider ref="customAuthProvider"/>
+     </authentication-manager>
+     
+     <beans:bean id="customAuthProvider" class="org.springframework.social.quickstart.user.CustomAuthProvider" />
+    
+	
+</beans:beans> 

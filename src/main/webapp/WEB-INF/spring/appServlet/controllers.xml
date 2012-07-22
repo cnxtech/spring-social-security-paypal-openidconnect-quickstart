@@ -9,13 +9,15 @@
 	<bean class="org.springframework.social.quickstart.HomeController">
 		<constructor-arg ref="paypal" />
 	</bean>
-
+	
 	<!-- Allows users to sign-in with their provider accounts. -->
 	<bean class="org.springframework.social.connect.web.ProviderSignInController">
 		<constructor-arg ref="connectionFactoryLocator" />
 		<constructor-arg ref="usersConnectionRepository" />		
 		<constructor-arg>
-			<bean class="org.springframework.social.quickstart.user.SimpleSignInAdapter" />
+			<bean class="org.springframework.social.quickstart.user.SimpleSignInAdapter" >
+				<constructor-arg ref="paypal" />
+			</bean>
 		</constructor-arg>
 		<property name="postSignInUrl" value="/popupHandler"/>
 	</bean>
