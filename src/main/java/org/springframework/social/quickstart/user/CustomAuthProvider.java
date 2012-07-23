@@ -6,6 +6,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.quickstart.security.filter.BMLUser;
 
+/**
+ * Provider which basically says that this app supports {@code UsernamePasswordAuthenticationToken}.
+ * The other overriden method is dummy.
+ * 
+ * @author abprabhakar
+ * 
+ */
 public class CustomAuthProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	@Override
@@ -17,7 +24,6 @@ public class CustomAuthProvider extends AbstractUserDetailsAuthenticationProvide
 
 	@Override
 	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-
 		return (BMLUser) authentication.getPrincipal();
 	}
 

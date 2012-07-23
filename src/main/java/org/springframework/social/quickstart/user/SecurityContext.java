@@ -15,9 +15,16 @@
  */
 package org.springframework.social.quickstart.user;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 /**
- * Simple SecurityContext that stores the currently signed-in connection in a thread local.
+ * Simple SecurityContext that stores the currently signed-in connection in a thread local. This
+ * class is redundant with spring security approach. We can just use {@link SecurityContextHolder}
+ * instead of this.
+ * 
  * @author Keith Donald
+ * 
+ * @see
  */
 public final class SecurityContext {
 
