@@ -15,9 +15,6 @@
  */
 package org.springframework.social.quickstart.filter;
 
-/**
- * @author Michael Lavelle
- */
 public class NonUniqueConnectionException extends RuntimeException {
 
 	public NonUniqueConnectionException(String message) {

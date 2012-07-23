@@ -32,7 +32,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * @author Michael Lavelle
+ * @author Michael Lavelle - adapted to PayPal by Abhijith Prabhakar
  */
 public class SpringSocialSecurityConnectInterceptor<S> extends EnsureUniqueConnectInterceptor<S> implements ConnectInterceptor<S> {
 

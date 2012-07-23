@@ -48,7 +48,6 @@ public class OpenIdConnectAuthenticationToken extends AbstractAuthenticationToke
 	public OpenIdConnectAuthenticationToken(Object principle, Collection<? extends GrantedAuthority> authorities, String userId) {
 
 		super(authorities);
-
 		this.principle = principle;
 		this.userId = userId;
 

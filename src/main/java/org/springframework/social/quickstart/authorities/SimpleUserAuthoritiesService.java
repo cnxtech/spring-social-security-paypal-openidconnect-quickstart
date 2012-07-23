@@ -26,10 +26,10 @@ import org.springframework.social.connect.ConnectionKey;
 import org.springframework.stereotype.Service;
 
 /**
- * Simple implementation of UserAuthoritiesService, by default assigning each
- * user the same default role, and a default role for each provider
+ * Simple implementation of UserAuthoritiesService, by default assigning each user the same default
+ * role, and a default role for each provider
  * 
- * @author Michael Lavelle
+ * @author Michael Lavelle - adapted to PayPal by abprabhakar
  */
 @Service
 @Qualifier("userAuthoritiesService")
@@ -38,19 +38,16 @@ public class SimpleUserAuthoritiesService implements UserAuthoritiesService {
 	private String defaultAuthorityName = "ROLE_USER";
 
 	public String getDefaultProviderAuthorityName(ConnectionKey connectionKey) {
-		return defaultAuthorityName + "_"
-				+ connectionKey.getProviderId().toUpperCase();
+		return defaultAuthorityName + "_" + connectionKey.getProviderId().toUpperCase();
 	}
 
 	public void setDefaultAuthorityName(String defaultAuthorityName) {
 		this.defaultAuthorityName = defaultAuthorityName;
 	}
 
-	protected List<GrantedAuthority> getDefaultAuthorities(
-			Set<ConnectionKey> connectionKeys) {
+	protected List<GrantedAuthority> getDefaultAuthorities(Set<ConnectionKey> connectionKeys) {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities
-				.add(new SimpleGrantedAuthority(defaultAuthorityName));
+		grantedAuthorities.add(new SimpleGrantedAuthority(defaultAuthorityName));
 		for (ConnectionKey connectionKey : connectionKeys) {
 			grantedAuthorities.add(getProviderAuthority(connectionKey));
 
@@ -60,15 +57,13 @@ public class SimpleUserAuthoritiesService implements UserAuthoritiesService {
 	}
 
 	@Override
-	public List<GrantedAuthority> getAuthoritiesForUser(
-			Set<ConnectionKey> connectionKeys, String userId) {
+	public List<GrantedAuthority> getAuthoritiesForUser(Set<ConnectionKey> connectionKeys, String userId) {
 		return getDefaultAuthorities(connectionKeys);
 	}
 
 	@Override
 	public GrantedAuthority getProviderAuthority(ConnectionKey connectionKey) {
-		return new SimpleGrantedAuthority(
-				getDefaultProviderAuthorityName(connectionKey));
+		return new SimpleGrantedAuthority(getDefaultProviderAuthorityName(connectionKey));
 	}
 
 }

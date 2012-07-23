@@ -22,14 +22,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.ConnectionKey;
+import org.springframework.social.openidconnect.api.PayPalProfile;
 import org.springframework.social.quickstart.authorities.UserAuthoritiesService;
+import org.springframework.social.quickstart.user.BMLUser;
 import org.springframework.social.quickstart.user.OpenIdConnectAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -48,22 +49,24 @@ public class SpringSocialSecurityAuthenticationFactory {
 		this.userAuthoritiesService = userAuthoritiesService;
 	}
 
-	protected Authentication createNewAuthentication(String userId, String password, Collection<? extends GrantedAuthority> authorities) {
-		return new UsernamePasswordAuthenticationToken(userId, password, authorities);
+	protected Authentication createNewAuthentication(UserDetails user, Collection<? extends GrantedAuthority> authorities) {
+		return new OpenIdConnectAuthenticationToken(user, authorities, user.getUsername());
 	}
 
-	public Authentication createAuthenticationForAllConnections(String userName, String password, List<Connection<?>> connections) {
-		return createNewAuthentication(userName, password,
-				userAuthoritiesService.getAuthoritiesForUser(toConnectionKeySet(connections, includeExpiredConnectionsInAuthorisations), userName));
+	public Authentication createAuthenticationForAllConnections(PayPalProfile payPalProfile, List<Connection<?>> connections) {
+		List<GrantedAuthority> authoritiesForUser = userAuthoritiesService.getAuthoritiesForUser(
+				toConnectionKeySet(connections, includeExpiredConnectionsInAuthorisations), payPalProfile.getUser_id());
+		BMLUser bmlUser = new BMLUser(payPalProfile, authoritiesForUser);
+		return createNewAuthentication(bmlUser, authoritiesForUser);
 	}
 
 	public Authentication updateAuthenticationForNewConnection(Authentication existingAuthentication, Connection<?> connection) {
-		return createNewAuthentication(existingAuthentication.getName(), existingAuthentication.getCredentials().toString(),
+		return createNewAuthentication((BMLUser) existingAuthentication.getPrincipal(),
 				addAuthority(existingAuthentication, userAuthoritiesService.getProviderAuthority(connection.getKey())));
 	}
 
 	public Authentication createAuthenticationFromUserDetails(UserDetails userDetails) {
-		return new OpenIdConnectAuthenticationToken(userDetails, userDetails.getAuthorities(), userDetails.getUsername());
+		return createNewAuthentication(userDetails, userDetails.getAuthorities());
 	}
 
 	private Set<ConnectionKey> toConnectionKeySet(List<Connection<?>> connections, boolean includeExpiredConnections) {

@@ -17,7 +17,7 @@ public class BMLUser extends User {
 	 * @param authorities
 	 */
 	public BMLUser(final PayPalProfile user, final Collection<? extends GrantedAuthority> authorities) {
-		super(user.getGiven_name(), user.getPassword(), true, true, true, true, authorities == null ? null : authorities);
+		super(user.getUser_id(), user.getPassword(), true, true, true, true, authorities == null ? null : authorities);
 		this.payPalUser = user;
 	}
 

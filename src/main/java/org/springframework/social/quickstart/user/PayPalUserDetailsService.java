@@ -40,10 +40,8 @@ public class PayPalUserDetailsService implements UserDetailsService {
 		PayPalProfile payPalProfile = signInService.getUserProfile(userName);
 		List<Connection<?>> allConnections = getConnections(connectionRepository, userName);
 		if (allConnections.size() > 0) {
-
-			Authentication authentication = authenticationFactory.createAuthenticationForAllConnections(userName, payPalProfile.getPassword(),
-					allConnections);
-			return new BMLUser(payPalProfile, authentication.getAuthorities());
+			Authentication authentication = authenticationFactory.createAuthenticationForAllConnections(payPalProfile, allConnections);
+			return (BMLUser) authentication.getPrincipal();
 
 		} else {
 			throw new UsernameNotFoundException(userName);

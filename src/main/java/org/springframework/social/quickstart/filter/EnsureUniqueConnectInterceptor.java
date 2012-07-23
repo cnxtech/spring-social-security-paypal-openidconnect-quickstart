@@ -24,9 +24,6 @@ import org.springframework.social.connect.web.ConnectInterceptor;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.WebRequest;
 
-/**
- * @author Michael Lavelle
- */
 public class EnsureUniqueConnectInterceptor<S> implements ConnectInterceptor<S> {
 
 	@Autowired
@@ -36,22 +33,19 @@ public class EnsureUniqueConnectInterceptor<S> implements ConnectInterceptor<S> 
 	private ConnectionRepository connectionRepository;
 
 	@Override
-	public void preConnect(ConnectionFactory<S> connectionFactory,
-			MultiValueMap<String, String> parameters, WebRequest request) {
+	public void preConnect(ConnectionFactory<S> connectionFactory, MultiValueMap<String, String> parameters, WebRequest request) {
 
 	}
 
 	@Override
 	public void postConnect(Connection<S> connection, WebRequest request) {
 
-		boolean connectionAlreadyAssociatedWithAnotherUser = usersConnectionRepository
-				.findUserIdsWithConnection(connection).size() > 1;
+		boolean connectionAlreadyAssociatedWithAnotherUser = usersConnectionRepository.findUserIdsWithConnection(connection).size() > 1;
 		if (connectionAlreadyAssociatedWithAnotherUser) {
 			connectionRepository.removeConnection(connection.getKey());
 			NonUniqueConnectionException nonUniqueConnectionException = new NonUniqueConnectionException(
 					"The connection is already associated with a different account");
-			request.setAttribute("lastSessionException",
-					nonUniqueConnectionException, WebRequest.SCOPE_SESSION);
+			request.setAttribute("lastSessionException", nonUniqueConnectionException, WebRequest.SCOPE_SESSION);
 			throw nonUniqueConnectionException;
 		}
 
