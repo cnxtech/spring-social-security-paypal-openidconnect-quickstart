@@ -12,6 +12,18 @@ import org.springframework.social.openidconnect.api.PayPalProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * <p>
+ * Creates and manages connections specific to a provider. Finds PayPal specific connections and get
+ * {@code PayPalProfile}
+ * </p>
+ * <p>
+ * This service is basically replacement to payPal bean in the old config.
+ * </p>
+ * 
+ * @author abprabhakar
+ * 
+ */
 @Service
 public class ConnectionRepositorySignInService {
 

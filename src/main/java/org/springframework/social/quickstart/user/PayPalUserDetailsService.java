@@ -34,6 +34,11 @@ public class PayPalUserDetailsService implements UserDetailsService {
 	@Autowired
 	private ConnectionRepositorySignInService signInService;
 
+	/**
+	 * This method is completely adapted to our specific needs. You need to override this method for
+	 * your app specific requirements.
+	 */
+
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(userName);

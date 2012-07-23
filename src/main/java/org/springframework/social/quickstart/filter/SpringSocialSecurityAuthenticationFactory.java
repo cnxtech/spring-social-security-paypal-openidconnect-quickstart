@@ -49,6 +49,14 @@ public class SpringSocialSecurityAuthenticationFactory {
 		this.userAuthoritiesService = userAuthoritiesService;
 	}
 
+	/**
+	 * For this app we needed to add whole userdetails into the token instead of just username. This
+	 * is one of the customization or deviations from the regular spring social security code.
+	 * 
+	 * @param user
+	 * @param authorities
+	 * @return
+	 */
 	protected Authentication createNewAuthentication(UserDetails user, Collection<? extends GrantedAuthority> authorities) {
 		return new OpenIdConnectAuthenticationToken(user, authorities, user.getUsername());
 	}

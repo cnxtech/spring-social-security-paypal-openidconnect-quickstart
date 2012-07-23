@@ -22,8 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
 /**
- * Custom authentication token written for spring security context. For now using family name as
- * userid.
+ * Custom authentication token written for spring security context. For now using user_id as userid.
  * 
  * TODO: Has to figure out how to access paypal userid.
  * 

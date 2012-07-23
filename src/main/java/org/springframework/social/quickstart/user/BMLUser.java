@@ -6,6 +6,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.social.openidconnect.api.PayPalProfile;
 
+/**
+ * Wrapper to hold {@code PayPalProfile} while extending Spring Security User.
+ * 
+ * @author abprabhakar@paypal.com
+ * 
+ */
 public class BMLUser extends User {
 
 	private static final long serialVersionUID = 1L;
