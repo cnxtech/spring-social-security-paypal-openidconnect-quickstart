@@ -21,21 +21,14 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.NotConnectedException;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.openidconnect.PayPalConnectionFactory;
-import org.springframework.social.openidconnect.api.PayPal;
-import org.springframework.social.quickstart.user.SecurityContext;
 import org.springframework.social.quickstart.user.SimpleConnectionSignUp;
-import org.springframework.social.quickstart.user.User;
 
 /**
  * Spring Social Configuration.
@@ -74,28 +67,6 @@ public class SocialConfig {
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator(), Encryptors.noOpText());
 		repository.setConnectionSignUp(new SimpleConnectionSignUp());
 		return repository;
-	}
-
-	/**
-	 * Request-scoped data access object providing access to the current user's connections.
-	 */
-	@Bean
-	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public ConnectionRepository connectionRepository() {
-		User user = SecurityContext.getCurrentUser();
-		return usersConnectionRepository().createConnectionRepository(user.getId());
-	}
-
-	/**
-	 * A proxy to a request-scoped object representing the current user's primary PayPal account.
-	 * 
-	 * @throws NotConnectedException
-	 *             if the user is not connected to paypal.
-	 */
-	@Bean
-	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public PayPal paypal() {
-		return connectionRepository().getPrimaryConnection(PayPal.class).getApi();
 	}
 
 }

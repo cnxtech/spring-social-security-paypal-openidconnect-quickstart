@@ -15,35 +15,33 @@
  */
 package org.springframework.social.quickstart;
 
-import javax.inject.Inject;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.openidconnect.api.PayPal;
 import org.springframework.social.openidconnect.api.PayPalProfile;
+import org.springframework.social.quickstart.user.BMLUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Simple little @Controller that invokes PayPal and renders the result. The
- * injected {@link PayPal} reference is configured with the required
- * authorization credentials for the current user behind the scenes.
+ * Simple little @Controller that invokes PayPal and renders the result. The injected {@link PayPal}
+ * reference is configured with the required authorization credentials for the current user behind
+ * the scenes.
  * 
  * @author Keith Donald, adapted to PayPal by Felipe Albertao
  */
 @Controller
 public class HomeController {
 
-	private final PayPal paypal;
-
-	@Inject
-	public HomeController(PayPal paypal) {
-		this.paypal = paypal;
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String popUp() {
+		return "popupHandler";
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
-		PayPalProfile paypalProfile = paypal.getUserProfile();
+		PayPalProfile paypalProfile = ((BMLUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPayPalUser();
 		model.addAttribute("profile", paypalProfile);
 		return "home";
 	}

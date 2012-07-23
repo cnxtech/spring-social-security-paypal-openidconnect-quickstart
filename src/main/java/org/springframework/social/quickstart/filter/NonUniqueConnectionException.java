@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.quickstart.user;
+package org.springframework.social.quickstart.filter;
 
 /**
- * Simple little User model. 
- * Just stores the user's id for simplicity.
- * @author Keith Donald
+ * @author Michael Lavelle
  */
-public final class User {
-	
-	private final String id;
-	
-	public User(String id) {
-		this.id = id;
+public class NonUniqueConnectionException extends RuntimeException {
+
+	public NonUniqueConnectionException(String message) {
+		super(message);
 	}
-	
-	public String getId() {
-		return id;
-	}
-	
 }

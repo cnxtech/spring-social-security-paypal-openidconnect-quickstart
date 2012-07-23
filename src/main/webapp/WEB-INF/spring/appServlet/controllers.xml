@@ -7,7 +7,6 @@
 
 	<!-- Controls rendering of the home page once a user has signed in -->
 	<bean class="org.springframework.social.quickstart.HomeController">
-		<constructor-arg ref="paypal" />
 	</bean>
 	
 	<!-- Allows users to sign-in with their provider accounts. -->
@@ -15,11 +14,9 @@
 		<constructor-arg ref="connectionFactoryLocator" />
 		<constructor-arg ref="usersConnectionRepository" />		
 		<constructor-arg>
-			<bean class="org.springframework.social.quickstart.user.SimpleSignInAdapter" >
-				<constructor-arg ref="paypal" />
-			</bean>
+			<bean class="org.springframework.social.quickstart.filter.SpringSocialSecuritySignInService" />
 		</constructor-arg>
-		<property name="postSignInUrl" value="/popupHandler"/>
+		<property name="postSignInUrl" value="/authenticate"/>
 	</bean>
 		
 	<mvc:view-controller path="/signin" />

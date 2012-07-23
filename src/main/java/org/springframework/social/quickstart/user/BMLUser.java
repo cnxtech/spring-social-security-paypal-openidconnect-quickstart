@@ -1,6 +1,6 @@
-package org.springframework.social.quickstart.security.filter;
+package org.springframework.social.quickstart.user;
 
-import java.util.Arrays;
+import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,16 +10,14 @@ public class BMLUser extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String NOT_APPLICABLE = "N/A";
-
 	private final PayPalProfile payPalUser;
 
 	/**
 	 * @param username
 	 * @param authorities
 	 */
-	public BMLUser(final PayPalProfile user, final GrantedAuthority... authorities) {
-		super(user.getUser_id(), user.getPassword(), true, true, true, true, authorities == null ? null : Arrays.asList(authorities));
+	public BMLUser(final PayPalProfile user, final Collection<? extends GrantedAuthority> authorities) {
+		super(user.getGiven_name(), user.getPassword(), true, true, true, true, authorities == null ? null : authorities);
 		this.payPalUser = user;
 	}
 

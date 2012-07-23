@@ -8,7 +8,7 @@
         <script type="text/javascript">
             function sendToParent() {
                 if(window.opener) {
-                    window.opener.location.replace("<c:url value="/"/>");
+                    window.opener.location.replace("<c:url value="/home"/>");
                     window.close();
                 }
              }

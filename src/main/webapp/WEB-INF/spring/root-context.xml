@@ -9,7 +9,10 @@
 	
 	<!-- Enable @Annotation-drive bean configuration -->
 	<context:annotation-config />
+	<context:component-scan base-package="org.springframework.social.quickstart.authorities" />
 	<context:component-scan base-package="org.springframework.social.quickstart.user" />
+	<context:component-scan base-package="org.springframework.social.quickstart.filter" />
+	
 	
 	<!-- Configures External Property Resolution -->
 	<import resource="properties.xml" />
