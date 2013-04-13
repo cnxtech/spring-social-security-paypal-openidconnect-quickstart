@@ -21,7 +21,7 @@
 		</script>
 
 		<form action="<c:url value="/signin/paypal"/>" method="POST" target="_PPIdentityWindow_">
-		    <input class="connectButton" type="image" src="https://www.paypalobjects.com/en_US/Marketing/i/btn/login-with-paypal-button.png" 
+		    <input class="connectButton" type="image" src="https://www.paypalobjects.com/webstatic/en_US/developer/docs/lipp/loginwithpaypalbutton.png"
                 onclick="paypal_access_popup()" />
 		</form>
 
