@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,39 +15,32 @@
  */
 package org.springframework.social.quickstart.user;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 /**
- * Simple SecurityContext that stores the currently signed-in connection in a thread local. This
- * class is redundant with spring security approach. We can just use {@link SecurityContextHolder}
- * instead of this.
- * 
+ * Simple SecurityContext that stores the currently signed-in connection in a thread local.
  * @author Keith Donald
- * 
- * @see
  */
 public final class SecurityContext {
 
-	private static final ThreadLocal<User> currentUser = new ThreadLocal<User>();
+    private static final ThreadLocal<User> currentUser = new ThreadLocal<User>();
 
-	public static User getCurrentUser() {
-		User user = currentUser.get();
-		if (user == null) {
-			throw new IllegalStateException("No user is currently signed in");
-		}
-		return user;
-	}
+    public static User getCurrentUser() {
+        User user = currentUser.get();
+        if (user == null) {
+            throw new IllegalStateException("No user is currently signed in");
+        }
+        return user;
+    }
 
-	public static void setCurrentUser(User user) {
-		currentUser.set(user);
-	}
+    public static void setCurrentUser(User user) {
+        currentUser.set(user);
+    }
 
-	public static boolean userSignedIn() {
-		return currentUser.get() != null;
-	}
+    public static boolean userSignedIn() {
+        return currentUser.get() != null;
+    }
 
-	public static void remove() {
-		currentUser.remove();
-	}
+    public static void remove() {
+        currentUser.remove();
+    }
 
 }

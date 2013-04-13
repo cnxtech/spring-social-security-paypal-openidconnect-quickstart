@@ -18,11 +18,10 @@ package org.springframework.social.quickstart.config;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -31,10 +30,14 @@ import org.springframework.social.connect.NotConnectedException;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
+import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.openidconnect.PayPalConnectionFactory;
+import org.springframework.social.openidconnect.PayPalConnectionFactoryBuilder;
 import org.springframework.social.openidconnect.api.PayPal;
+import org.springframework.social.openidconnect.inmemory.InMemoryUsersConnectionRepository;
 import org.springframework.social.quickstart.user.SecurityContext;
 import org.springframework.social.quickstart.user.SimpleConnectionSignUp;
+import org.springframework.social.quickstart.user.SimpleSignInAdapter;
 import org.springframework.social.quickstart.user.User;
 
 /**
@@ -45,14 +48,12 @@ import org.springframework.social.quickstart.user.User;
 @Configuration
 public class SocialConfig {
 
-	@Value("${paypal.appId}")
-	private String paypalAppId;
+	@Autowired
+    Environment environment;
 
-	@Value("${paypal.appSecret}")
-	private String paypalAppSecret;
 
-	@Inject
-	private DataSource dataSource;
+//    @Inject
+//	private DataSource dataSource;
 
 	/**
 	 * When a new provider is added to the app, register its {@link ConnectionFactory} here.
@@ -62,19 +63,24 @@ public class SocialConfig {
 	@Bean
 	public ConnectionFactoryLocator connectionFactoryLocator() {
 		ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
-		registry.addConnectionFactory(new PayPalConnectionFactory(paypalAppId, paypalAppSecret));
+        //Builder to create paypal connection factory.  This was created to aid injecting different set of URLs than production.
+        //Useful if you are hosting paypal access in other environments.  There are couple of other options also such as turning
+        //off hostname verifier and disabling login variant "not you" page.
+        ConnectionFactory<PayPal> connectionFactory = new PayPalConnectionFactoryBuilder().withAppId(environment.getProperty("paypal.appid"))
+                .withAppSecret(environment.getProperty("paypal.appsecret")).withScope(environment.getProperty("paypal.scope")).build();
+		registry.addConnectionFactory(connectionFactory);
 		return registry;
 	}
 
-	/**
-	 * Singleton data access object providing access to connections across all users.
-	 */
-	@Bean
-	public UsersConnectionRepository usersConnectionRepository() {
-		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator(), Encryptors.noOpText());
-		repository.setConnectionSignUp(new SimpleConnectionSignUp());
-		return repository;
-	}
+    /**
+     * Singleton data access object providing access to connections across all users.
+     */
+    @Bean
+    public UsersConnectionRepository usersConnectionRepository() {
+        InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());
+        repository.setConnectionSignUp(new SimpleConnectionSignUp());
+        return repository;
+    }
 
 	/**
 	 * Request-scoped data access object providing access to the current user's connections.
@@ -97,5 +103,14 @@ public class SocialConfig {
 	public PayPal paypal() {
 		return connectionRepository().getPrimaryConnection(PayPal.class).getApi();
 	}
+
+    /**
+     * The Spring MVC Controller that allows users to sign-in with their provider accounts.
+     */
+    @Bean
+    public ProviderSignInController providerSignInController() {
+        return new ProviderSignInController(connectionFactoryLocator(), usersConnectionRepository(),
+                new SimpleSignInAdapter());
+    }
 
 }

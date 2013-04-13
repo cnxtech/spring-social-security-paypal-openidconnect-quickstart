@@ -17,6 +17,7 @@ package org.springframework.social.quickstart;
 
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.openidconnect.api.PayPal;
 import org.springframework.social.openidconnect.api.PayPalProfile;
 import org.springframework.stereotype.Controller;
@@ -29,19 +30,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * injected {@link PayPal} reference is configured with the required
  * authorization credentials for the current user behind the scenes.
  * 
- * @author Keith Donald, adapted to PayPal by Felipe Albertao
+ * @author Keith Donald - Adapted to PayPal Abhijith Prabhakar
  */
 @Controller
 public class HomeController {
 
-	private final PayPal paypal;
+    @Autowired
+	private PayPal paypal;
 
-	@Inject
-	public HomeController(PayPal paypal) {
-		this.paypal = paypal;
-	}
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		PayPalProfile paypalProfile = paypal.getUserProfile();
 		model.addAttribute("profile", paypalProfile);

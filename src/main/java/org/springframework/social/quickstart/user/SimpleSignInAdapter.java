@@ -23,7 +23,6 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.openidconnect.api.PayPal;
 import org.springframework.social.openidconnect.api.PayPalProfile;
-import org.springframework.social.quickstart.security.filter.SecurityUtil;
 import org.springframework.web.context.request.NativeWebRequest;
 
 /**
@@ -42,19 +41,9 @@ public final class SimpleSignInAdapter implements SignInAdapter {
 
 	private PayPal payPal;
 
-	public SimpleSignInAdapter() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public SimpleSignInAdapter(PayPal payPal) {
-		this.payPal = payPal;
-	}
-
 	@Override
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
 		SecurityContext.setCurrentUser(new User(userId));
-		PayPalProfile profile = payPal.getUserProfile();
-		Authentication authentication = SecurityUtil.signInUser(profile);
 		userCookieGenerator.addCookie(userId, request.getNativeResponse(HttpServletResponse.class));
 		return null;
 	}
