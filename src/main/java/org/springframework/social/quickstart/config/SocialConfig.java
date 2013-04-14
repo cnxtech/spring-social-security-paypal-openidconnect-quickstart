@@ -15,30 +15,27 @@
  */
 package org.springframework.social.quickstart.config;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.social.connect.ConnectionFactory;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.NotConnectedException;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+import org.springframework.social.connect.*;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.openidconnect.PayPalConnectionFactory;
 import org.springframework.social.openidconnect.PayPalConnectionFactoryBuilder;
 import org.springframework.social.openidconnect.api.PayPal;
-import org.springframework.social.openidconnect.inmemory.InMemoryUsersConnectionRepository;
+import org.springframework.social.openidconnect.jdbc.OpenIdJdbcUsersConnectionRepository;
 import org.springframework.social.quickstart.user.SecurityContext;
 import org.springframework.social.quickstart.user.SimpleConnectionSignUp;
 import org.springframework.social.quickstart.user.SimpleSignInAdapter;
 import org.springframework.social.quickstart.user.User;
+
+import javax.inject.Inject;
+import javax.sql.DataSource;
 
 /**
  * Spring Social Configuration.
@@ -52,8 +49,8 @@ public class SocialConfig {
     Environment environment;
 
 
-//    @Inject
-//	private DataSource dataSource;
+    @Inject
+	private DataSource dataSource;
 
 	/**
 	 * When a new provider is added to the app, register its {@link ConnectionFactory} here.
@@ -77,7 +74,9 @@ public class SocialConfig {
      */
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
-        InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());
+        //InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());
+        OpenIdJdbcUsersConnectionRepository repository = new OpenIdJdbcUsersConnectionRepository(dataSource,
+                connectionFactoryLocator(), Encryptors.noOpText());
         repository.setConnectionSignUp(new SimpleConnectionSignUp());
         return repository;
     }
