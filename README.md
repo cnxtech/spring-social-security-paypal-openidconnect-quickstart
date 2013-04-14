@@ -6,6 +6,7 @@ This sample app shows how use [Spring Social PayPal OpenIdConnect] to login with
     git clone git@github.com:paypal/spring-social-paypal-openidconnect.git
     cd spring-social-paypal-openidconnect
 	mvn clean install
+	cd ..
     git clone git@github.com:paypal/spring-social-security-paypal-openidconnect-quickstart.git
     cd spring-social-security-paypal-openidconnect-quickstart
     mvn clean install
