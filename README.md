@@ -1,33 +1,28 @@
-Spring Social PayPal Quickstart (Spring 3.0.x)
+Spring Social PayPal Quickstart (Spring 3.2.x)
 ==============================================
 
-This sample app shows how use [Spring Social PayPal] to login with a PayPal user and obtain identity information.
+This sample app shows how use [Spring Social PayPal OpenIdConnect] to login with a PayPal user and obtain identity information.
 
-    git clone git@github.com:abhijith-prabhakar/spring-social-paypal-openidconnect.git
-    git clone git@github.com:abhijith-prabhakar/spring-social-security-paypal-openidconnect-quickstart.git
+    git clone git@github.com:paypal/spring-social-paypal-openidconnect.git
     cd spring-social-paypal-openidconnect
+	mvn clean install
+    git clone git@github.com:paypal/spring-social-security-paypal-openidconnect-quickstart.git
+    cd spring-social-security-paypal-openidconnect-quickstart
     mvn clean install
-    cd ../spring-social-security-paypal-openidconnect-quickstart/
     mvn tomcat:run
 
-Then browse: `http://localhost:8080/spring-social-paypal-quickstart-30x/signin`
+Then browse: `http://localhost:8080/spring-social-paypal-quickstart-32x/signin`
 
-To check if security is working, you can directly try to access `http://localhost:8080/spring-social-paypal-quickstart-30x/home` and you should be routed back to login page which is /signin
+This example application is based on 'https://github.com/SpringSource/spring-social-samples/tree/master/spring-social-quickstart-3.0.x' sample.
+It has been updated to use Spring 3.2 version.  Config files are under org.springframework.social.quickstart.config package.
 
-Learn how to use Spring Social PayPal with OpenId Connect in your application:
+Spring Social Paypal extension is based on OpenId Connect protocol.  It includes both JDBC and InMemory connection repository implementation.
 
-Some of the interesting lessons learnt while developing this application:
+SocialConfig has a commented out line: //InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());
 
-Final goal was to integrate Spring social and Spring security with PayPal OpenId Connect protocol
+Please uncomment this one if you do not intend to use H2 database.
 
-First task was to have a separate module for spring-social-paypal with openid connect instead of OAuth2. This can be found at https://github.com/abhijith-prabhakar/spring-social-paypal-openidconnect.git
+For any help or more info, please write an email to *abprabhakar@paypal.com*
 
-Please note that this branch(master) employs one of the 2 ways to authorize user into application. For the second approach please look at ReadMe file of (socialsignin-filter) branch of this repo.  This is a simpler approach compared to the other one.
-
-This approach is based on tutorial find at: `http://harmonicdevelopment.tumblr.com/post/13613051804/adding-spring-social-to-a-spring-mvc-and-spring`
-
-1. Override signin method of SignInAdapter, to create a security context.  In this example SecurityUtil class takes care of this.
-2. Authorizations and security is specific to your application and define them to your application needs.
-for ex: /WEB-INF/spring/spring-security-config.xml
 
 
