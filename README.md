@@ -18,11 +18,13 @@ It has been updated to use Spring 3.2 version.  Config files are under org.sprin
 
 Spring Social Paypal extension is based on OpenId Connect protocol.  It includes both JDBC and InMemory connection repository implementation.
 
-SocialConfig has a commented out line: //InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());
+SocialConfig has a commented out line: 
+```//InMemoryUsersConnectionRepository repository = new InMemoryUsersConnectionRepository(connectionFactoryLocator());```
 
 Please uncomment this one if you do not intend to use H2 database.
 
 For any help or more info, please write an email to *abprabhakar@paypal.com*
 
+Note:  clientid and secret used in application.properties is already registered sample application.  Please replace with your own if you desire.
 
 
