@@ -27,7 +27,7 @@
 	    </dependency>	
         <dependency>
             <groupId>org.springframework.social.openidconnect</groupId>
-            <artifactId>spring-social-openidconnect</artifactId>
+            <artifactId>spring-social-paypal</artifactId>
             <version>${org.springframework.social.paypal-version}</version>
             <exclusions>
                 <exclusion>
